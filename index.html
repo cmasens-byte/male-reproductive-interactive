@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Male Reproductive System Interactive</title>
+<title>Male Reproductive System Interactive (Embedded Diagram)</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
-    body { font-family: Arial, sans-serif; max-width: 800px; margin: auto; padding: 20px; line-height: 1.5; }
+    body { font-family: Arial, sans-serif; max-width: 900px; margin: auto; padding: 20px; line-height: 1.5; }
     h1, h2 { text-align: center; }
     .activity, .quiz { border: 2px solid #ccc; padding: 15px; margin: 20px 0; border-radius: 8px; background: #fafafa; }
     button { padding: 10px 15px; margin-top: 10px; cursor: pointer; }
@@ -13,25 +13,78 @@
     .result { font-weight: bold; margin-top: 10px; }
     .footer { margin-top: 24px; font-size: 0.9rem; color: #444; }
     .note { background:#fffbe6; border:1px solid #f0e1a1; padding:10px; border-radius:8px; }
+    .label-list li { margin: 4px 0; }
+    .highlight { outline: 3px solid #0077ff; }
+    .svg-wrap { display: flex; gap: 16px; align-items: flex-start; flex-wrap: wrap; }
+    .legend { min-width: 220px; }
+    .legend button { display: block; width: 100%; margin: 6px 0; }
+    .sr-only { position: absolute; left: -10000px; top: auto; width: 1px; height: 1px; overflow: hidden; }
 </style>
 </head>
 <body>
 
 <h1>Learn About the Male Reproductive System</h1>
-<p class="note"><strong>How to use:</strong> Work through the 3 quick activities (about 5 minutes each), then take the 5-question quiz.</p>
+<p class="note"><strong>Heads up:</strong> This version embeds the diagram directly in the page so it always shows, even when opened from a file. Click a label to highlight the matching part.</p>
 
 <!-- Activity 1 -->
 <div class="activity" id="activity1">
 <h2>Activity 1: Label the Parts</h2>
-<p>Look at the diagram and identify the labels. Say out loud where each label should go or point on the screen.</p>
-<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Male_reproductive_system_labeled.svg/640px-Male_reproductive_system_labeled.svg.png" alt="Male Reproductive System Diagram" width="100%">
-<ul>
-    <li>Testes</li>
-    <li>Scrotum</li>
-    <li>Penis</li>
-    <li>Urethra</li>
-    <li>Vas deferens</li>
-</ul>
+<p>Click a label on the right to highlight that part on the diagram. Say out loud where it is and what it does.</p>
+
+<div class="svg-wrap">
+  <!-- Simplified schematic (not anatomically perfect; for learning purposes) -->
+  <svg id="maleDiagram" viewBox="0 0 600 500" width="600" height="500" aria-labelledby="title desc" role="img">
+    <title id="title">Simplified male reproductive system diagram</title>
+    <desc id="desc">A simplified torso view with penis, urethra, testes in the scrotum, and vas deferens indicated.</desc>
+
+    <!-- Pelvis outline -->
+    <path d="M100,50 Q300,10 500,50 L520,400 Q300,470 80,400 Z" fill="#f2f2f2" stroke="#bbb" />
+
+    <!-- Penis (side schematic) -->
+    <g id="Penis" tabindex="0">
+      <rect x="380" y="280" width="150" height="40" rx="20" ry="20" fill="#ffd1a9" stroke="#c48f6a"></rect>
+      <circle cx="530" cy="300" r="20" fill="#ffd1a9" stroke="#c48f6a"></circle>
+    </g>
+
+    <!-- Urethra (line through penis) -->
+    <g id="Urethra" tabindex="0">
+      <line x1="390" y1="300" x2="530" y2="300" stroke="#b00000" stroke-width="4"></line>
+      <line x1="330" y1="300" x2="390" y2="300" stroke="#b00000" stroke-width="4"></line>
+    </g>
+
+    <!-- Scrotum -->
+    <g id="Scrotum" tabindex="0">
+      <ellipse cx="350" cy="340" rx="40" ry="35" fill="#ffd1a9" stroke="#c48f6a"></ellipse>
+    </g>
+
+    <!-- Testes inside scrotum -->
+    <g id="Testes" tabindex="0">
+      <ellipse cx="335" cy="340" rx="16" ry="22" fill="#fff" stroke="#888"></ellipse>
+      <ellipse cx="365" cy="340" rx="16" ry="22" fill="#fff" stroke="#888"></ellipse>
+    </g>
+
+    <!-- Vas deferens (from testes upward then forward) -->
+    <g id="Vas deferens" tabindex="0">
+      <path d="M335,318 C300,290 280,250 290,220 C300,200 320,200 340,220 C360,240 380,250 390,265" fill="none" stroke="#006400" stroke-width="4"></path>
+      <path d="M365,318 C400,290 420,250 410,220 C400,200 380,200 360,220 C340,240 320,250 310,265" fill="none" stroke="#006400" stroke-width="4"></path>
+    </g>
+
+    <!-- Simple labels (for accessibility) -->
+    <text x="385" y="275" font-size="14" fill="#333">Penis</text>
+    <text x="330" y="310" font-size="14" fill="#333">Scrotum</text>
+    <text x="320" y="372" font-size="14" fill="#333">Testes</text>
+  </svg>
+
+  <div class="legend" aria-label="Clickable labels">
+    <button data-target="Testes">Highlight: Testes</button>
+    <button data-target="Scrotum">Highlight: Scrotum</button>
+    <button data-target="Penis">Highlight: Penis</button>
+    <button data-target="Urethra">Highlight: Urethra</button>
+    <button data-target="Vas deferens">Highlight: Vas deferens</button>
+    <button id="clearHL">Clear highlight</button>
+  </div>
+</div>
+<p id="a1-msg" class="result" aria-live="polite"></p>
 </div>
 
 <!-- Activity 2 -->
@@ -116,10 +169,38 @@
 </div>
 
 <div class="footer">
-    <p>Educational use only. If you find an error or want extra features (timer, progress save, etc.), let your teacher know.</p>
+    <p>Educational use only. Diagram is simplified for learning.</p>
 </div>
 
 <script>
+// Activity 1 interactions
+const buttons = document.querySelectorAll('.legend button[data-target]');
+const clearBtn = document.getElementById('clearHL');
+const msg = document.getElementById('a1-msg');
+let currentHL = null;
+
+function setHighlight(id) {
+  if (currentHL) { currentHL.classList.remove('highlight'); }
+  const el = document.getElementById(id);
+  if (el) {
+    el.classList.add('highlight');
+    currentHL = el;
+    msg.textContent = 'Highlighted: ' + id + '. Can you explain its function?';
+  } else {
+    msg.textContent = 'Could not find: ' + id;
+  }
+}
+
+buttons.forEach(b => {
+  b.addEventListener('click', () => setHighlight(b.dataset.target));
+});
+clearBtn.addEventListener('click', () => {
+  if (currentHL) currentHL.classList.remove('highlight');
+  currentHL = null;
+  msg.textContent = 'Highlight cleared.';
+});
+
+// Activity 2
 function checkMatch(btn, correct) {
     const result = document.getElementById("match-result");
     if (btn.textContent === correct) {
@@ -129,6 +210,7 @@ function checkMatch(btn, correct) {
     }
 }
 
+// Activity 3
 let tfCorrect = 0;
 function checkTF(btn, correct) {
     const res = document.getElementById("tf-result");
@@ -140,6 +222,7 @@ function checkTF(btn, correct) {
     }
 }
 
+// Quiz
 function checkQuiz() {
     let score = 0;
     const answers = ["Testes","Carries sperm","Keep testes cool","Urethra","False"];
